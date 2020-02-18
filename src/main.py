@@ -1,4 +1,3 @@
-from game import *
-from player import Player
+from game import ticTacToe
 
 ticTacToe()

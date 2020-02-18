@@ -1,5 +1,4 @@
 import os
-import random
 from player import Player
 
 p1 = Player('Aurel', 'x')
