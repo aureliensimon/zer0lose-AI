@@ -1,7 +1,7 @@
 import os
 from player import Player
 
-p1 = Player('Aurel', 'x')
+p1 = Player('human', 'x')
 p2 = Player('zer0lose', 'o')
 
 def initBoard ():
