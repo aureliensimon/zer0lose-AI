@@ -1,4 +1,5 @@
 import os
+import random
 
 def initBoard ():
     return [
@@ -36,14 +37,15 @@ def checkDiagonal (board):
 def gameOver (board):
     return checkColown(board) or checkRow(board) or checkDiagonal(board)
 
-def printWinner (player):
-    if (player):
-        name = 'Aurel'
-    else:
-        name = 'zer0lose'
+def freeBoard (board, x, y):
+    return (board[x][y] == ' ')
 
-    print (name, 'won')
-
+def gameDraw (board):
+    for i in range (3):
+        for j in range (3):
+            if (board[i][j] == ' '):
+                return False
+    return True
 
 def ticTacToe ():
     board = initBoard()
@@ -56,15 +58,32 @@ def ticTacToe ():
         os.system('clear')
         printBoard(board)
         
-        if (gameOver(board)):
-            printWinner(turn)
+        if gameOver(board):
+            print('zer0lose' if turn else 'Player', 'win')
+            return
+        elif gameDraw(board):
+            print('Draw !')
             return
 
         if (turn):
-            humanChoice = input()
-            if (len(humanChoice) > 1) or (48 > ord(humanChoice)) or (58 < ord(humanChoice)):
-                print('Please use numpad')
+            while True:
+                choice = input()
+                if (len(choice) > 1) or (48 > ord(choice)) or (58 < ord(choice)):
+                    print('Please use numpad')
+                    return
+                if (freeBoard(board, 2 - int((int(choice) - 1) / 3), int((int(choice) - 1) % 3))):
+                    break
+                else:
+                    print('Already used')
+                
+        else:
+            while True:
+                choice = random.randrange(10)
+                if (freeBoard(board, 2 - int((int(choice) - 1) / 3), int((int(choice) - 1) % 3))):
+                    break
 
-            board = fillBoard(board, 'x', 2 - int((int(humanChoice) - 1) / 3), int((int(humanChoice) - 1) % 3))
+        board = fillBoard(board, 'x' if turn else 'o', 2 - int((int(choice) - 1) / 3), int((int(choice) - 1) % 3))
+        
+        turn = not(turn)
 
 ticTacToe()
