@@ -8,12 +8,10 @@ def initBoard ():
         [' ', ' ', ' ']
     ]
 
-
 def printBoard (board):
     for i in range (3):
         print (board[i][0], ' | ', board[i][1], ' | ', board[i][2])
         if (i != 2) : print('-------------')
-
 
 def fillBoard (board, player, x, y):
     board[x][y] = player 
@@ -85,5 +83,3 @@ def ticTacToe ():
         board = fillBoard(board, 'x' if turn else 'o', 2 - int((int(choice) - 1) / 3), int((int(choice) - 1) % 3))
         
         turn = not(turn)
-
-ticTacToe()
