@@ -45,11 +45,11 @@ def gameDraw (board):
                 return False
     return True
 
-def ticTacToe ():
+def ticTacToe (p1, p2):
     board = initBoard()
     
-    # 1: human trun
-    # 0: computer turn
+    # 1: p1 trun
+    # 0: p2 turn
     turn = 1
 
     while True:
@@ -57,7 +57,7 @@ def ticTacToe ():
         printBoard(board)
         
         if gameOver(board):
-            print('zer0lose' if turn else 'Player', 'win')
+            print(p2.name if turn else p1.name, 'win')
             return
         elif gameDraw(board):
             print('Draw !')

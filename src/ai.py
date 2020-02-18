@@ -1,1 +1,1 @@
-import math
+def score (board):
