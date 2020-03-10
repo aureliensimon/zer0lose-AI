@@ -132,7 +132,7 @@ def ticTacToe ():
         if (turn):
             while True:
                 choice = input()
-                if (len(choice) > 1) or (48 > ord(choice)) or (58 < ord(choice)):
+                if (len(choice) > 1) or (49 > ord(choice)) or (58 < ord(choice)):
                     print('Please use numpad')
                     return
                 if (freeBoard(board, 2 - int((int(choice) - 1) / 3), int((int(choice) - 1) % 3))):
