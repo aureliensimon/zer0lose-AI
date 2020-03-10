@@ -47,39 +47,29 @@ def checkDiagonal (board, tag):
                 return True
     return False
 
+def gameOver (board, player):
+    for i in range(7):
+        if checkRow(board, i, player.tag) or checkColumn(board, i, player.tag): return True
+    return checkDiagonal(board, player.tag)
+
+def gameDraw (board):
+    for i in range(7):
+        for j in range(7):
+            if (board[i][j] == ' '): return False
+    return True
+
 b = initBoard()
+
+# tests
 b[2][2] = 'x'
 b[3][3] = 'x'
 b[4][4] = 'x'
 b[5][5] = 'x'
-
-#b[3][3] = 'o'
 b[4][2] = 'o'
 b[5][1] = 'o'
 b[6][0] = 'o'
-'''
-b[0][1] = 'x'
-b[0][2] = 'x'
-b[0][3] = 'x'
-b[0][4] = 'x'
-b[0][5] = 'x'
-b[0][6] = 'x'
 
-b[1][1] = 'x'
-b[2][2] = 'x'
-b[3][3] = 'x'
-b[6][0] = 'o'
-b[6][1] = 'o'
-b[6][2] = 'o'
-b[6][3] = 'o'
-
-b[1][0] = 'x'
-b[2][0] = 'x'
-b[3][0] = 'x'
-'''
 fillBoard(b, 0, 'P')
 printBoard(b)
-print('Row gagante : ', checkRow(b, 0, 'x'))
-print('Col gagante : ', checkColumn(b, 6, 'o'))
-print('Dia gagante : ', checkDiagonal(b, 'x'))
+print(gameOver(b, p1))
 
