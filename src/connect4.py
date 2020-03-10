@@ -9,10 +9,11 @@ def initBoard ():
     return [[' '] * 7 for i in range(7)]
 
 def printBoard (board):
+    os.system('clear')
     for i in range(7):
         print ('| ' + board[0][6 - i] + ' | ' + board[1][6 - i] + ' | ' + board[2][6 - i] + ' | ' + board[3][6 - i] + ' | ' + board[4][6 - i] + ' | ' + board[5][6 - i] + ' | ' + board[6][6 - i] + ' | ')
         print (' ---+---+---+---+---+---+---')
-    print ('  0   1   2   3   4   5   6')
+    print ('  1   2   3   4   5   6   7')
 
 def getFreeSpace (board, col):
     for i in range(7):
@@ -20,13 +21,9 @@ def getFreeSpace (board, col):
             return i
     return None
 
-def fillBoard (board, col, tag):
-    index = getFreeSpace(board, col)
-    if (index == None):
-        print('Full')
-        return
-    else:
-        board[col][index] = tag
+def fillBoard (board, col, index, tag):
+    board[col][index] = tag
+    return board
 
 def checkRow (board, Row, tag):
     for i in range(4):
@@ -58,18 +55,48 @@ def gameDraw (board):
             if (board[i][j] == ' '): return False
     return True
 
-b = initBoard()
+def connect4 ():
+    board = initBoard()
+    printBoard(board)
 
-# tests
-b[2][2] = 'x'
-b[3][3] = 'x'
-b[4][4] = 'x'
-b[5][5] = 'x'
-b[4][2] = 'o'
-b[5][1] = 'o'
-b[6][0] = 'o'
+    # 1: p1 trun
+    # 0: p2 turn
+    turn = 1
 
-fillBoard(b, 0, 'P')
-printBoard(b)
-print(gameOver(b, p1))
+    while True:
+            
+        if (turn):
+            while True:
+                choice = int(input())
+                if (choice < 1) or (choice > 7):
+                    print('Please use numpad between [1 - 7]')
+                    continue
+                if (getFreeSpace(board, choice - 1) != None):
+                    break
+                else:
+                    print('Already used')
+                
+        else:
+            while True:
+                choice = int(input())
+                if (choice < 1) or (choice > 7):
+                    print('Please use numpad between [1 - 7]')
+                    continue
+                if (getFreeSpace(board, choice - 1) != None):
+                    break
+                else:
+                    print('Already used')
 
+        board = fillBoard(board, (choice - 1), getFreeSpace(board, choice - 1), p1.tag if turn else p2.tag)
+        
+        printBoard(board)
+        if gameOver(board, p1 if turn else p2):
+            print(p1.name if turn else p2.name, 'win')
+            return
+        elif gameDraw(board):
+            print('Draw !')
+            return
+
+        turn = not(turn)
+
+connect4()

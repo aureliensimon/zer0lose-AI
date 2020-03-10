@@ -15,6 +15,7 @@ def initBoard ():
 
 # Print the current board
 def printBoard (board):
+    os.system('clear')
     for i in range (3):
         print (board[i][0], ' | ', board[i][1], ' | ', board[i][2])
         if (i != 2) : print('-------------')
@@ -119,7 +120,6 @@ def ticTacToe ():
 
     score = None
     while True:
-        os.system('clear')
         printBoard(board)
         
         if gameOver(board, p2 if turn else p1):
@@ -132,9 +132,9 @@ def ticTacToe ():
         if (turn):
             while True:
                 choice = input()
-                if (len(choice) > 1) or (49 > ord(choice)) or (58 < ord(choice)):
+                if (len(choice) != 1) or (49 > ord(choice)) or (58 < ord(choice)):
                     print('Please use numpad')
-                    return
+                    continue
                 if (freeBoard(board, 2 - int((int(choice) - 1) / 3), int((int(choice) - 1) % 3))):
                     break
                 else:
