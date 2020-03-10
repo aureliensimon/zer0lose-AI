@@ -1,5 +1,4 @@
 import os
-import numpy as np
 from player import Player
 
 # Creating 2 players
@@ -29,9 +28,9 @@ def fillBoard (board, col, tag):
     else:
         board[col][index] = tag
 
-def checkLine (board, line, tag):
+def checkRow (board, Row, tag):
     for i in range(4):
-        if (board[i][line] == board[i + 1][line] == board[i + 2][line] == board[i + 3][line]) and (board[i][line] == tag):
+        if (board[i][Row] == board[i + 1][Row] == board[i + 2][Row] == board[i + 3][Row]) and (board[i][Row] == tag):
             return True
     return False
 
@@ -42,15 +41,23 @@ def checkColumn (board, col, tag):
     return False
 
 def checkDiagonal (board, tag):
-    # Upper diag
     for i in range(4):
         for j in range(4):
-            if ((board[i][j] == board[i + 1][j + 1] == board[i + 2][j + 2] == board[3 + i][j + 3]) and (board[i][j] == tag)) or ((board[6 - i][6 - j] == board[5 - i][5 - j] == board[4 - i][4 - j] == board[3 - i][board[3 - j]]) and (board[6 - i][6 - j] == tag)):
+            if ((board[i][6 - j] == board[i + 1][5 - j] == board[i + 2][4 - j] == board[i + 3][3 - j]) and (board[i][6 - j] == tag)) or ((board[i][j] == board[i + 1][j + 1] == board[i + 2][j + 2] == board[3 + i][j + 3]) and (board[i][j] == tag)):
                 return True
     return False
 
 b = initBoard()
-b[0][0] = 'x'
+b[2][2] = 'x'
+b[3][3] = 'x'
+b[4][4] = 'x'
+b[5][5] = 'x'
+
+#b[3][3] = 'o'
+b[4][2] = 'o'
+b[5][1] = 'o'
+b[6][0] = 'o'
+'''
 b[0][1] = 'x'
 b[0][2] = 'x'
 b[0][3] = 'x'
@@ -69,10 +76,10 @@ b[6][3] = 'o'
 b[1][0] = 'x'
 b[2][0] = 'x'
 b[3][0] = 'x'
-
-printBoard(b)
+'''
 fillBoard(b, 0, 'P')
-print(checkLine(b, 0, 'x'))
-print(checkColumn(b, 6, 'o'))
-print(checkDiagonal(b, 'x'))
+printBoard(b)
+print('Row gagante : ', checkRow(b, 0, 'x'))
+print('Col gagante : ', checkColumn(b, 6, 'o'))
+print('Dia gagante : ', checkDiagonal(b, 'x'))
 
