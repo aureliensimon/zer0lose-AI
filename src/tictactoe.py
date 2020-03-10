@@ -68,11 +68,17 @@ def gameDraw (board):
 def getOpponent (player):
     return p1 if player == p2 else p2
 
+def getX (num):
+    return 2 - int((num - 1) / 3)
+
+def getY (num):
+    return int((num - 1) % 3)
+
 # List all possible spot that the ai can play
 def getAvailableMoves (board):
     moves = []
     for i in range(1, 10):
-        if (freeBoard(board, 2 - int((i - 1) / 3), int((i - 1) % 3))):
+        if (freeBoard(board, getX(i), getY(i))):
             moves.append(i)
     return moves
 
@@ -93,10 +99,10 @@ def minimax (board, player, depth = 0):
     # For every possible play
     for move in getAvailableMoves(board):
         # Trying the spot
-        board = fillBoard(board, player, 2 - int((move - 1) / 3), int((move - 1) % 3))
+        board = fillBoard(board, player, getX(move), getY(move))
         result, _ = minimax(board, getOpponent(player), depth + 1)
         # Remove the current spot from the board
-        board = undoFillBoard(board, 2 - int((move - 1) / 3), int((move - 1) % 3))
+        board = undoFillBoard(board, getX(move), getY(move))
 
         # If if it's the ai turn
         if player == p2:
@@ -135,7 +141,7 @@ def ticTacToe ():
                 if (len(choice) != 1) or (49 > ord(choice)) or (58 < ord(choice)):
                     print('Please use numpad')
                     continue
-                if (freeBoard(board, 2 - int((int(choice) - 1) / 3), int((int(choice) - 1) % 3))):
+                if (freeBoard(board, getX(int(choice)), getY(int(choice)))):
                     break
                 else:
                     print('Already used')
@@ -143,5 +149,5 @@ def ticTacToe ():
         else:
             score, choice = minimax(board, p2)
 
-        board = fillBoard(board, p1 if turn else p2, 2 - int((int(choice) - 1) / 3), int((int(choice) - 1) % 3))
+        board = fillBoard(board, p1 if turn else p2, getX(int(choice)), getY(int(choice)))
         turn = not(turn)

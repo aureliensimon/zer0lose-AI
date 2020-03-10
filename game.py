@@ -1,6 +1,6 @@
 import sys
 sys.path.append("./src")
-from game import ticTacToe
+from tictactoe import ticTacToe
 
 # Start game
 ticTacToe()
