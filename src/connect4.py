@@ -7,7 +7,8 @@ p2 = Player('zer0lose', 'o')
 
 # Initialisation of the game board with empty char
 def initBoard ():
-    #return [[' '] * 7 for i in range(7)]
+    return [[' '] * 7 for i in range(7)]
+    '''
     return [
         ['o', 'o', 'o', 'x', 'x', ' ', ' '],
         ['o', 'x', 'o', 'x', 'o', ' ', ' '],
@@ -17,6 +18,7 @@ def initBoard ():
         ['x', 'x', 'o', 'x', 'o', 'x', ' '],
         ['o', 'x', 'o', 'o', 'x', 'o', ' ']
     ]
+    '''
 
 # Print the current board
 def printBoard (board):
