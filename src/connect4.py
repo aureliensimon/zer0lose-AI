@@ -7,7 +7,16 @@ p2 = Player('zer0lose', 'o')
 
 # Initialisation of the game board with empty char
 def initBoard ():
-    return [[' '] * 7 for i in range(7)]
+    #return [[' '] * 7 for i in range(7)]
+    return [
+        ['o', 'o', 'o', 'x', 'x', ' ', ' '],
+        ['o', 'x', 'o', 'x', 'o', ' ', ' '],
+        ['x', 'o', 'x', 'o', 'x', ' ', ' '],
+        ['o', 'o', 'x', 'o', 'x', 'x', ' '],
+        ['o', 'x', 'x', 'x', 'o', 'o', ' '],
+        ['x', 'x', 'o', 'x', 'o', 'x', ' '],
+        ['o', 'x', 'o', 'o', 'x', 'o', ' ']
+    ]
 
 # Print the current board
 def printBoard (board):
@@ -88,8 +97,6 @@ def minimax (board, player, depth = 0):
     bestMove = None
 
     # Check if the game is over / draw
-    printBoard(board)
-    print(getAvailableMoves(board))
     if gameOver(board, p1):
         return -10 + depth, None
     elif gameDraw(board):
@@ -100,12 +107,13 @@ def minimax (board, player, depth = 0):
     # For every possible play
     for move in getAvailableMoves(board):
         # Trying the spot
-        print(getFreeSpace(board, move))
         board = fillBoard(board, move, getFreeSpace(board, move), player.tag)
-        m = input()
         result, _ = minimax(board, getOpponent(player), depth + 1)
         # Remove the current spot from the board
-        board = undoFillBoard(board, move, getFreeSpace(board, move) - 1)
+        if (getFreeSpace(board, move) == None):
+            board = undoFillBoard(board, move, 6)
+        else:
+            board = undoFillBoard(board, move, getFreeSpace(board, move) - 1)
 
         # If if it's the ai turn
         if player == p2:
@@ -142,7 +150,9 @@ def connect4 ():
                     print('Already used')
                 
         else:
+            print('Thinking ...')
             score, choice = minimax(board, p2)
+            print('Done thinking ! choice : ', choice)
             choice = choice + 1
         
         board = fillBoard(board, (choice - 1), getFreeSpace(board, choice - 1), p1.tag if turn else p2.tag)
