@@ -29,6 +29,11 @@ def fillBoard (board, col, index, tag):
     board[col][index] = tag
     return board
 
+# Remove the player's tag in the board at one spot
+def undoFillBoard (board, col, index):
+    board[col][index] = ' '
+    return board
+
 # Check if a row is a winning one
 def checkRow (board, Row, tag):
     for i in range(4):
@@ -64,6 +69,56 @@ def gameDraw (board):
             if (board[i][j] == ' '): return False
     return True
 
+# Get the other player
+def getOpponent (player):
+    return p1 if player == p2 else p2
+
+# List all possible spot that the ai can play
+def getAvailableMoves (board):
+    moves = []
+    for i in range(7):
+        if (getFreeSpace(board, i) != None):
+            moves.append(i)
+    return moves
+
+# Minimax algorithm
+def minimax (board, player, depth = 0):
+    # Minimize the lose, maximise the profit
+    best = -10 if getOpponent(player) != p2 else 10
+    bestMove = None
+
+    # Check if the game is over / draw
+    printBoard(board)
+    print(getAvailableMoves(board))
+    if gameOver(board, p1):
+        return -10 + depth, None
+    elif gameDraw(board):
+        return 0, None
+    elif gameOver(board, p2):
+        return 10 - depth, None
+
+    # For every possible play
+    for move in getAvailableMoves(board):
+        # Trying the spot
+        print(getFreeSpace(board, move))
+        board = fillBoard(board, move, getFreeSpace(board, move), player.tag)
+        m = input()
+        result, _ = minimax(board, getOpponent(player), depth + 1)
+        # Remove the current spot from the board
+        board = undoFillBoard(board, move, getFreeSpace(board, move) - 1)
+
+        # If if it's the ai turn
+        if player == p2:
+            # If the move is better than the previous one
+            if result > best:
+                best, bestMove = result, move
+        else :
+            # If the move is less worse than the previous one
+            if result < best:
+                best, bestMove = result, move
+
+    return best, bestMove
+
 # Start Connect 4 game
 def connect4 ():
     board = initBoard()
@@ -87,18 +142,11 @@ def connect4 ():
                     print('Already used')
                 
         else:
-            while True:
-                choice = int(input())
-                if (choice < 1) or (choice > 7):
-                    print('Please use numpad between [1 - 7]')
-                    continue
-                if (getFreeSpace(board, choice - 1) != None):
-                    break
-                else:
-                    print('Already used')
-
-        board = fillBoard(board, (choice - 1), getFreeSpace(board, choice - 1), p1.tag if turn else p2.tag)
+            score, choice = minimax(board, p2)
+            choice = choice + 1
         
+        board = fillBoard(board, (choice - 1), getFreeSpace(board, choice - 1), p1.tag if turn else p2.tag)
+
         printBoard(board)
         if gameOver(board, p1 if turn else p2):
             print(p1.name if turn else p2.name, 'win')
