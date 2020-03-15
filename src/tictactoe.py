@@ -1,4 +1,5 @@
 import os
+from math import inf
 from player import Player
 
 # Creating 2 players
@@ -7,8 +8,7 @@ p2 = Player('zer0lose', 'o')
 
 # Initialisation of the game board with empty char
 def initBoard ():
-    return [
-        [[' '] * 3 for i in range(3)]
+    return [[' '] * 3 for i in range(3)]
 
 # Print the current board
 def printBoard (board):
@@ -122,6 +122,9 @@ def ticTacToe ():
     # 1: p1 trun
     # 0: p2 turn
     turn = 1
+
+    alpha = -inf
+    beta = inf
 
     score = None
     while True:
