@@ -46,9 +46,9 @@ def undoFillBoard (board, col, index):
     return board
 
 # Check if a row is a winning one
-def checkRow (board, Row, tag):
+def checkRow (board, row, tag):
     for i in range(4):
-        if (board[i][Row] == board[i + 1][Row] == board[i + 2][Row] == board[i + 3][Row]) and (board[i][Row] == tag):
+        if (board[i][row] == board[i + 1][row] == board[i + 2][row] == board[i + 3][row]) and (board[i][row] == tag):
             return True
     return False
 

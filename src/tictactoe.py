@@ -65,9 +65,11 @@ def gameDraw (board):
 def getOpponent (player):
     return p1 if player == p2 else p2
 
+# Get the colomn number {0, 1, 2} depending on the numpad input
 def getX (num):
     return 2 - int((num - 1) / 3)
 
+# Get the row number {0, 1, 2} depending on the numpad input
 def getY (num):
     return int((num - 1) % 3)
 
