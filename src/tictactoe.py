@@ -123,9 +123,6 @@ def ticTacToe ():
     # 0: p2 turn
     turn = 1
 
-    alpha = -inf
-    beta = inf
-
     score = None
     while True:
         printBoard(board)
