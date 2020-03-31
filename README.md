@@ -15,7 +15,7 @@ You are allow to play only with numeric value between 1 and 9, the numpad is the
 | 4 | 5 | 6 |
 | 1 | 2 | 3 |
 
-<br><br>
+<br>
 ## Minimax algorithm
 
 Minimax algorithm calculate the minimax decision at a current state and try to find the optimal move for a player, assuming that your opponent also plays optimally.
