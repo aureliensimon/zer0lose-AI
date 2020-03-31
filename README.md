@@ -15,6 +15,7 @@ You are allow to play only with numeric value between 1 and 9, the numpad is the
 | 4 | 5 | 6 |
 | 1 | 2 | 3 |
 
+<br><br>
 ## Minimax algorithm
 
 Minimax algorithm calculate the minimax decision at a current state and try to find the optimal move for a player, assuming that your opponent also plays optimally.
@@ -46,6 +47,7 @@ minimax(origin, depth, TRUE)
 
 Now that minimax is working fine, the program can find the optimal solution *almost* instantaneous **EXECPT** when the IA is playing the first move, it takes an average of 4.565382957458496s to find the best solution, but does it really need to calculate every game possible before finding the best option ? No, so we are going to need to optimise minimax
 
+<br><br>
 ## Alpha Beta prunning
 1956, John McCarthy is preside Dartmouth's conference, in which he presents alpha-beta prunning, that seeks to decrease the number of nodes that are evaluated by the minimax algorithm in its search tree. It stops evaluating a move when at least one possibility has been found that proves the move to be worse than a previously examined move. Such moves need not be evaluated further. When applied to a standard minimax tree, it returns the same move as minimax would, but prunes away branches that cannot possibly influence the final decision.
 
