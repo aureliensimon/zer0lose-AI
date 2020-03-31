@@ -4,7 +4,7 @@ zer0lose is a tic tac toe expert, an unbeatable artificial intelligence using mi
 
 ## How to play
 `
-$ > python3 tictactoe.py
+$ > python3 game.py
 `
 <br><br>
 Use can play using the numpad
