@@ -115,13 +115,55 @@ def minimax (board, player, depth = 0):
 
     return best, bestMove
 
+# alpha beta prunning
+def alphabeta (board, player, alpha = -inf, beta = inf, depth = 0):
+    # Minimize the lose, maximise the profit
+    best = -10 if getOpponent(player) != p2 else 10
+    bestMove = None
+
+    # Check if the game is over / draw
+    if gameOver(board, p1):
+        return -10 + depth, None
+    elif gameDraw(board):
+        return 0, None
+    elif gameOver(board, p2):
+        return 10 - depth, None
+
+    # For every possible play
+    for move in getAvailableMoves(board):
+        # Trying the spot
+        board = fillBoard(board, player, getX(move), getY(move))
+        result, _ = alphabeta(board, getOpponent(player), alpha, beta, depth + 1)
+        # Remove the current spot from the board
+        board = undoFillBoard(board, getX(move), getY(move))
+
+        # If if it's the ai turn
+        if player == p2:
+            # If the move is better than the previous one
+            if result > best:
+                best, bestMove = result, move
+            if best > beta:
+                return best, move
+			
+            alpha = max(alpha, result)
+        else :
+            # If the move is less worse than the previous one
+            if result < best:
+                best, bestMove = result, move
+            if best < alpha:
+                return best, move
+			
+            beta = min(beta, result) 
+
+    return best, bestMove
+
 # Start Tic Tac Toe game
 def ticTacToe ():
     board = initBoard()
     
     # 1: p1 trun
     # 0: p2 turn
-    turn = 1
+    turn = 0
 
     score = None
     while True:
@@ -146,7 +188,8 @@ def ticTacToe ():
                     print('Already used')
                 
         else:
-            score, choice = minimax(board, p2)
+            #score, choice = minimax(board, p2)
+            score, choice = alphabeta(board, p2)
 
         board = fillBoard(board, p1 if turn else p2, getX(int(choice)), getY(int(choice)))
         turn = not(turn)
