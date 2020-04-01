@@ -79,6 +79,9 @@ function alphabeta(node, depth, α, β, maximizingPlayer) is
         return value
 ```
 
+<br>
+### Effectiveness Measure
+
 Now, let's compare efficiency of both minimax and alpha-beta prunning when the IA is doing the first move
 
 | algorithm        | time (s)           |
