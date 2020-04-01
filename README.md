@@ -84,6 +84,6 @@ Now, let's compare efficiency of both minimax and alpha-beta prunning when the I
 | algorithm        | time (s)           |
 | ----------- |:----------:|
 | minimax     | 4.565382957458496 |
-| alpha-beta prunning      | 1.1368658542633057      |
+| alpha-beta prunning      | 0.20600628852844238      |
 
-As you can see alpha-beta prunning is four times more efficient, and this is only for game with 3x3 or 7x7 board, this optimisation is even more important in chess engine.
+As you can see alpha-beta prunning is more than **22 times** more efficient, and this is only for game with 3x3 or 7x7 board, this optimisation is even more important in chess engine.
