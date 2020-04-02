@@ -126,3 +126,11 @@ It remains to determine the evaluation function of this score. For Connect4, a p
     * 1 'X' : Score = **- 1**
     * 2 'X' : Score = **- 10**
     * 3 'X' : this is a very unfavorable position. Score = **- 500**
+
+<br>
+
+## Sources
+
+[Intelligence Artificielle 3e Edition](https://books.google.fr/books?id=DWTlFWSGxJMC&printsec=frontcover&hl=fr&sa=X&ved=0ahUKEwinvNLxm8roAhUMtRoKHV6MCFcQ6AEIKDAA#v=onepage&q&f=false)
+
+[GeekForGeeks Minimax in Game Theory](https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-1-introduction/)
