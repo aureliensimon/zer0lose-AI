@@ -7,6 +7,8 @@ Artificial intelligence playing tic tac toe and connect4 using minimax algorithm
 $ > python3 game.py
 `
 <br><br>
+**Tic Tac Toe :**
+
 You are allow to play only with numeric value between 1 and 9, the numpad is the representation of the tic tac toe grid like so
 
 |     |     |   |
@@ -14,6 +16,12 @@ You are allow to play only with numeric value between 1 and 9, the numpad is the
 | 7 | 8 | 9 |
 | 4 | 5 | 6 |
 | 1 | 2 | 3 |
+
+<br>
+
+**Connect 4 :**
+
+You are allow to play only with numeric value between 1 and 7
 
 <br>
 
@@ -90,4 +98,31 @@ Now, let's compare efficiency of both minimax and alpha-beta prunning when the I
 | minimax     | 4.565382957458496 |
 | alpha-beta prunning      | 0.206006288528442      |
 
-As you can see alpha-beta prunning is more than **22 times** more efficient, and this is only for game with 3x3 or 7x7 board, this optimisation is even more important in chess engine.
+As you can see alpha-beta prunning is more than **22 times** more efficient, and this is only for game with 3x3 or 7x6 board, this optimisation is even more important in chess engine.
+
+<br><br>
+
+## Connect 4 and minimax
+
+Minimax can also be applied to Connect4, but as the board is 7x6, to calculate all possibles boards after *n* turn it takes 7<sup>*n*</sup> calculus, so connect4 need a maximum depth to avoid too much calculus.
+Then we need a way to evaluate the board when it's not a game over that we are going to call when we reach the maximum depth to stop the recursion call.
+
+Here are the rules to evaluate a board :
+
+The analysis of the entire grid will result in a score. A high score will correspond to a grid "favorable" to the IA. A low score will be an "unfavorable" grid. The IA will therefore test each of the possible columns and choose the one that leads to the most favorable grid (the one with the highest score).
+
+It remains to determine the evaluation function of this score. For Connect4, a possible strategy is to evaluate all the possible quadruplets of consecutive squares on the grid. All the possible quadruplets are shown in the following figure (for a grid of 6 rows and 7 columns):
+
+![connect4quadruplets](https://github.com/aureliensimon/zer0lose/blob/master/img/connect4q.png)
+
+* If there are 'X' and 'O', there can never be an alignment of 4 discs of identical colors on this quadruplet: it is a neutral quadruplet. We can assign it the score of **0**.
+* If there is no disc, it is neither favorable nor unfavorable, score of **0**
+* If there are only IA 'O': this is a favorable quadruplet. We will give it a positive score:
+    * 1 '0' : the position is open for the computer. Score = **1**
+    * 2 '0' (not necessarily consecutive): it's a much better position. Score = **10**
+    * 3 '0' (not necessarily consecutive): this is a position that can potentially lead to victory. Score = **1000**
+    * 4 '0' : win. Score = **100000**.
+* If there are only Human 'X': this is a unfavorable quadruplet. We will give it a negative score:
+    * 1 'X' : Score = **- 1**
+    * 2 'X' : Score = **- 10**
+    * 3 'X' : this is a very unfavorable position. Score = **- 500**
