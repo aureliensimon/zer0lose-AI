@@ -116,7 +116,7 @@ It remains to determine the evaluation function of this score. For Connect4, a p
 ![connect4quadruplets](https://github.com/aureliensimon/zer0lose/blob/master/img/connect4q.png)
 
 * If there are 'X' and 'O', there can never be an alignment of 4 discs of identical colors on this quadruplet: it is a neutral quadruplet. We can assign it the score of **0**.
-* If there is no disc, it is neither favorable nor unfavorable, score of **0**
+* If there is nothing, it is neither favorable nor unfavorable, score of **0**
 * If there are only IA 'O': this is a favorable quadruplet. We will give it a positive score:
     * 1 '0' : the position is open for the computer. Score = **1**
     * 2 '0' (not necessarily consecutive): it's a much better position. Score = **10**
