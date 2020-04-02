@@ -1,4 +1,5 @@
 import os
+from math import inf
 from player import Player
 
 # Creating 2 players
@@ -7,30 +8,21 @@ p2 = Player('zer0lose', 'o')
 
 # Initialisation of the game board with empty char
 def initBoard ():
-    return [[' '] * 7 for i in range(7)]
-    '''
-    return [
-        ['o', 'o', 'o', 'x', 'x', ' ', ' '],
-        ['o', 'x', 'o', 'x', 'o', ' ', ' '],
-        ['x', 'o', 'x', 'o', 'x', ' ', ' '],
-        ['o', 'o', 'x', 'o', 'x', 'x', ' '],
-        ['o', 'x', 'x', 'x', 'o', 'o', ' '],
-        ['x', 'x', 'o', 'x', 'o', 'x', ' '],
-        ['o', 'x', 'o', 'o', 'x', 'o', ' ']
-    ]
-    '''
+    return [[' '] * 6 for i in range(7)]
 
 # Print the current board
 def printBoard (board):
     os.system('clear')
-    for i in range(7):
-        print ('| ' + board[0][6 - i] + ' | ' + board[1][6 - i] + ' | ' + board[2][6 - i] + ' | ' + board[3][6 - i] + ' | ' + board[4][6 - i] + ' | ' + board[5][6 - i] + ' | ' + board[6][6 - i] + ' | ')
-        print (' ---+---+---+---+---+---+---')
+    for i in range(6):
+        for j in range(7):
+            print ('| ' + board[j][6 - i - 1], end=' ')
+        print('|')
+        print(' ---+---+---+---+---+---+---')
     print ('  1   2   3   4   5   6   7')
 
 # Get the index of the first empty space in a colown
 def getFreeSpace (board, col):
-    for i in range(7):
+    for i in range(6):
         if (board[col][i] == ' '):
             return i
     return None
@@ -54,7 +46,7 @@ def checkRow (board, row, tag):
 
 # Check if a colomn is a winning one
 def checkColumn (board, col, tag):
-    for i in range(4):
+    for i in range(3):
         if (board[col][i] == board[col][i + 1] == board[col][i + 2] == board[col][i + 3]) and (board[col][i] == tag):
             return True
     return False
@@ -62,21 +54,24 @@ def checkColumn (board, col, tag):
 # Check if one of the diagonal is a winning one
 def checkDiagonal (board, tag):
     for i in range(4):
-        for j in range(4):
-            if ((board[i][6 - j] == board[i + 1][5 - j] == board[i + 2][4 - j] == board[i + 3][3 - j]) and (board[i][6 - j] == tag)) or ((board[i][j] == board[i + 1][j + 1] == board[i + 2][j + 2] == board[3 + i][j + 3]) and (board[i][j] == tag)):
+        for j in range(3):
+            if ((board[i][5 - j] == board[i + 1][4 - j] == board[i + 2][3 - j] == board[i + 3][2 - j]) and (board[i][5 - j] == tag)) or ((board[i][j] == board[i + 1][j + 1] == board[i + 2][j + 2] == board[3 + i][j + 3]) and (board[i][j] == tag)):
                 return True
     return False
 
 # Check if game is over
 def gameOver (board, player):
+    for i in range(6):
+        if checkRow(board, i, player.tag): return True
     for i in range(7):
-        if checkRow(board, i, player.tag) or checkColumn(board, i, player.tag): return True
+        if checkColumn(board, i, player.tag): return True
+
     return checkDiagonal(board, player.tag)
 
 # Check if it's a draw (no more space)
 def gameDraw (board):
     for i in range(7):
-        for j in range(7):
+        for j in range(6):
             if (board[i][j] == ' '): return False
     return True
 
@@ -91,6 +86,50 @@ def getAvailableMoves (board):
         if (getFreeSpace(board, i) != None):
             moves.append(i)
     return moves
+
+# Return the strength of a 4 connected area on the board (the more the better for IA)
+def evalQuadruplet (q):
+    score = 0
+
+    nbX = q.count('x')
+    nbO = q.count('o')
+
+    # X and O or none of them = neutral
+    if ((nbX != 0) and (nbO != 0)) or ((nbX == 0) and (nbO == 0)):
+        score = 0
+    
+    # only X
+    if (nbX != 0) and (nbO == 0):
+        if (nbX == 1): score = -1
+        if (nbX == 2): score = -10
+        if (nbX == 3): score = -500
+    
+    # only O
+    if (nbO != 0) and (nbX == 0):
+        if (nbX == 1): score = 1
+        if (nbX == 2): score = 10
+        if (nbX == 3): score = 1000
+        if (nbX == 4): score = 100000
+
+    return score
+
+def evalBoard (board):
+    score = 0
+    for i in range(7):
+        for j in range(6):
+            if (i < 4):
+                # check row
+                score += evalQuadruplet([board[i][j], board[i + 1][j], board[i + 2][j], board[i + 3][j]])
+            if (j > 2):
+                # check col
+                score += evalQuadruplet([board[i][j], board[i][j - 1], board[i][j - 2], board[i][j - 3]])
+            if (i < 4) and (j > 2):
+                # check descending diag
+                score += evalQuadruplet([board[i][j], board[i + 1][j - 1], board[i + 2][j - 2], board[i + 3][j - 3]])
+            if (i < 4) and (j < 3):
+                # check ascending diag
+                score += evalQuadruplet([board[i][j], board[i + 1][j + 1], board[i + 2][j + 2], board[i + 3][j + 3]])
+    return score
 
 # Minimax algorithm
 def minimax (board, player, depth = 0):
@@ -113,7 +152,7 @@ def minimax (board, player, depth = 0):
         result, _ = minimax(board, getOpponent(player), depth + 1)
         # Remove the current spot from the board
         if (getFreeSpace(board, move) == None):
-            board = undoFillBoard(board, move, 6)
+            board = undoFillBoard(board, move, 5)
         else:
             board = undoFillBoard(board, move, getFreeSpace(board, move) - 1)
 
@@ -129,6 +168,55 @@ def minimax (board, player, depth = 0):
 
     return best, bestMove
 
+# Minimax algorithm
+def alphabeta (board, player, maxDepth, alpha = -inf, beta = inf, depth = 0):
+    # Minimize the lose, maximise the profit
+    best = -100000 if getOpponent(player) != p2 else 100000
+    bestMove = None
+
+    # Check if the game is over / draw
+    if depth == maxDepth:
+        return evalBoard(board), None
+    if gameOver(board, p1):
+        return -100000 + depth, None
+    elif gameDraw(board):
+        return 0, None
+    elif gameOver(board, p2):
+        return 100000 - depth, None
+
+    # For every possible play
+    for move in getAvailableMoves(board):
+        # Trying the spot
+        board = fillBoard(board, move, getFreeSpace(board, move), player.tag)
+        result, _ = alphabeta(board, getOpponent(player), maxDepth, alpha, beta, depth + 1)
+        # Remove the current spot from the board
+        if (getFreeSpace(board, move) == None):
+            board = undoFillBoard(board, move, 5)
+        else:
+            board = undoFillBoard(board, move, getFreeSpace(board, move) - 1)
+
+        # If if it's the ai turn
+        if player == p2:
+            # If the move is better than the previous one
+            if result > best:
+                best, bestMove = result, move
+            if best >= beta:
+                return best, move
+            
+            alpha = max(alpha, result)
+        else :
+            # If the move is less worse than the previous one
+            if result < best:
+                best, bestMove = result, move
+            if best <= alpha:
+                return best, move
+            
+            beta = min(beta, result)
+            
+
+    return best, bestMove
+
+
 # Start Connect 4 game
 def connect4 ():
     board = initBoard()
@@ -136,7 +224,8 @@ def connect4 ():
 
     # 1: p1 trun
     # 0: p2 turn
-    turn = 1
+    turn = 0
+    predict = 6
 
     while True:
 
@@ -152,9 +241,8 @@ def connect4 ():
                     print('Already used')
                 
         else:
-            print('Thinking ...')
-            score, choice = minimax(board, p2)
-            print('Done thinking ! choice : ', choice)
+            #score, choice = minimax(board, p2)
+            score, choice = alphabeta(board, p2, predict)
             choice = choice + 1
         
         board = fillBoard(board, (choice - 1), getFreeSpace(board, choice - 1), p1.tag if turn else p2.tag)
@@ -168,5 +256,3 @@ def connect4 ():
             return
 
         turn = not(turn)
-
-connect4()
