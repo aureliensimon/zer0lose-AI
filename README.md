@@ -79,11 +79,15 @@ function alphabeta(node, depth, α, β, maximizingPlayer) is
         return value
 ```
 
+<br>
+
+### Effectiveness Measure
+
 Now, let's compare efficiency of both minimax and alpha-beta prunning when the IA is doing the first move
 
 | algorithm        | time (s)           |
 | ----------- |:----------:|
 | minimax     | 4.565382957458496 |
-| alpha-beta prunning      | 0.20600628852844238      |
+| alpha-beta prunning      | 0.206006288528442      |
 
 As you can see alpha-beta prunning is more than **22 times** more efficient, and this is only for game with 3x3 or 7x7 board, this optimisation is even more important in chess engine.
