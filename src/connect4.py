@@ -213,7 +213,6 @@ def alphabeta (board, player, maxDepth, alpha = -inf, beta = inf, depth = 0):
             
             beta = min(beta, result)
             
-
     return best, bestMove
 
 
