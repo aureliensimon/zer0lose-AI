@@ -142,7 +142,7 @@ def alphabeta (board, player, alpha = -inf, beta = inf, depth = 0):
             # If the move is better than the previous one
             if result > best:
                 best, bestMove = result, move
-            if best > beta:
+            if best >= beta:
                 return best, move
 			
             alpha = max(alpha, result)
@@ -150,7 +150,7 @@ def alphabeta (board, player, alpha = -inf, beta = inf, depth = 0):
             # If the move is less worse than the previous one
             if result < best:
                 best, bestMove = result, move
-            if best < alpha:
+            if best <= alpha:
                 return best, move
 			
             beta = min(beta, result) 
