@@ -11,7 +11,6 @@ p2 = Player('zer0lose', 'o')
 def initBoard ():
     return [[' '] * 3 for i in range(3)]
 
-
 # Restart game
 def restartGame ():
     playAgain = input('Do you want to play again ? (Y-n) : ')
