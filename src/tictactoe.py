@@ -1,4 +1,5 @@
 import os
+import sys
 from math import inf
 from player import Player
 
@@ -9,6 +10,20 @@ p2 = Player('zer0lose', 'o')
 # Initialisation of the game board with empty char
 def initBoard ():
     return [[' '] * 3 for i in range(3)]
+
+
+# Restart game
+def restartGame ():
+    playAgain = input('Do you want to play again ? (Y-n) : ')
+    quit = (playAgain == 'N' or playAgain == 'n')
+    if (quit) : sys.exit(0)
+
+    board = initBoard()
+    return board
+
+# Print Current Score
+def printScore(draw):
+    print('\n', p1.name, p1.score, ' - ',draw, ' - ', p2.score, p2.name)
 
 # Print the current board
 def printBoard (board):
@@ -160,25 +175,37 @@ def alphabeta (board, player, alpha = -inf, beta = inf, depth = 0):
 # Start Tic Tac Toe game
 def ticTacToe ():
     board = initBoard()
-    
-    # 1: p1 trun
-    # 0: p2 turn
-    turn = 0
 
+    scoreDraw = 0
+
+    playerWantToStart = input('\nDo you want to start ? (Y-n) : ')
+    turn = (playerWantToStart == 'Y' or playerWantToStart == 'y')
+    
     score = None
+
     while True:
         printBoard(board)
-        
+        printScore(scoreDraw)
+
         if gameOver(board, p2 if turn else p1):
-            print(p2.name if turn else p1.name, 'win')
-            return
+            if (turn):
+                print('\n', p2.name, 'win\n')
+                p2.score += 1
+            else:
+                print('\n', p1.name, 'win\n')
+                p1.score +=1
+
+            board = restartGame()
+            continue
         elif gameDraw(board):
             print('Draw !')
-            return
+            scoreDraw += 1
+            board = restartGame()
+            continue
 
         if (turn):
             while True:
-                choice = input()
+                choice = input('\nYour choice : ')
                 if (len(choice) != 1) or (49 > ord(choice)) or (58 < ord(choice)):
                     print('Please use numpad')
                     continue

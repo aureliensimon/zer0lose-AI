@@ -3,3 +3,4 @@ class Player:
         self.name = name
         # tag = 'x' / 'o'
         self.tag = tag
+        self.score = 0
