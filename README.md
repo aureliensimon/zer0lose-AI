@@ -9,7 +9,7 @@ $ > python3 game.py
 <br><br>
 **Tic Tac Toe :**
 
-You are allow to play only with numeric value between 1 and 9, the numpad is the representation of the tic tac toe grid like so
+play with numeric value between 1 and 9, the numpad is the representation of the tic tac toe grid like so
 
 |     |     |   |
 | ------------- |-------------| -----|
