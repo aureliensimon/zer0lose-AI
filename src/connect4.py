@@ -1,4 +1,5 @@
 import os
+import sys
 from math import inf
 from player import Player
 
@@ -9,6 +10,19 @@ p2 = Player('zer0lose', 'o')
 # Initialisation of the game board with empty char
 def initBoard ():
     return [[' '] * 6 for i in range(7)]
+
+# Restart game
+def restartGame ():
+    playAgain = input('Do you want to play again ? (Y-n) : ')
+    quit = (playAgain == 'N' or playAgain == 'n')
+    if (quit) : sys.exit(0)
+
+    board = initBoard()
+    return board
+
+# Print Current Score
+def printScore(draw):
+    print('\n', p1.name, p1.score, ' - ',draw, ' - ', p2.score, p2.name)
 
 # Print the current board
 def printBoard (board):
@@ -221,16 +235,38 @@ def connect4 ():
     board = initBoard()
     printBoard(board)
 
-    # 1: p1 trun
-    # 0: p2 turn
-    turn = 0
+    playerWantToStart = input('\nDo you want to start ? (Y-n) : ')
+    turn = (playerWantToStart == 'Y' or playerWantToStart == 'y')
+
+    scoreDraw = 0
+
+    # How many turn the AI will compute, the higher the stronger it will be, however it can start
+    # to be very slow
     predict = 6
 
     while True:
 
+        printBoard(board)
+        printScore(scoreDraw)
+
+        if gameOver(board, p2 if turn else p1):
+            if (turn):
+                print('\n', p2.name, 'win\n')
+                p2.score += 1
+            else:
+                print('\n', p1.name, 'win\n')
+                p1.score +=1
+            board = restartGame()
+            continue
+        elif gameDraw(board):
+            print('Draw !')
+            scoreDraw += 1
+            board = restartGame()
+            continue
+
         if (turn):
             while True:
-                choice = int(input())
+                choice = int(input('\nYour choice : '))
                 if (choice < 1) or (choice > 7):
                     print('Please use numpad between [1 - 7]')
                     continue
@@ -245,13 +281,5 @@ def connect4 ():
             choice = choice + 1
         
         board = fillBoard(board, (choice - 1), getFreeSpace(board, choice - 1), p1.tag if turn else p2.tag)
-
-        printBoard(board)
-        if gameOver(board, p1 if turn else p2):
-            print(p1.name if turn else p2.name, 'win')
-            return
-        elif gameDraw(board):
-            print('Draw !')
-            return
 
         turn = not(turn)

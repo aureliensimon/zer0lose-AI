@@ -54,7 +54,7 @@ function minimax(node, depth, maximizingPlayer) is
 minimax(origin, depth, TRUE)
 ```
 
-Now that minimax is working fine, the program can find the optimal solution *almost* instantaneous **EXECPT** when the IA is playing the first move, it takes an average of 4.565382957458496s to find the best solution, but does it really need to calculate every game possible before finding the best option ? No, so we are going to need to optimise minimax
+Now that minimax is working fine, the program can find the optimal solution *almost* instantaneous **EXECPT** when the IA is playing the first move, it takes an average of 4.565382957458496s to find the best solution, but does it really need to calculate every game possible before finding the best option ? No, so let's optimise minimax
 
 <br><br>
 ## Alpha Beta prunning
